@@ -33,8 +33,12 @@ class HTTP
     else
       reqdata = Rack::Utils.build_nested_query(data)
     end
+    puts "NK REQ: #{uri.inspect} -> #{pp reqdata}"
 
-    resp = req.request_post( uri.path, reqdata, headers)     
+    resp = req.request_post( uri.path, reqdata, headers)
+
+    puts "NK RESP: #{pp resp.body}"
+      
     return resp
   end
 

@@ -44,15 +44,20 @@ class Gracenote
       return @userID
     end
 
-    #send req to server and get user ID
-    data =  "<QUERIES>
-              <QUERY CMD='REGISTER'>
-                <CLIENT>"+ clientID +"</CLIENT>
-              </QUERY>
-            </QUERIES>"
-    resp = api(data)
-    resp = checkRES resp
-    @userID = resp['RESPONSES']['RESPONSE']['USER']
+    if File.exists?('./GN_ID')
+      @userID = File.read('./GN_ID')
+    else
+      #send req to server and get user ID
+      data =  "<QUERIES>
+                <QUERY CMD='REGISTER'>
+                  <CLIENT>"+ clientID +"</CLIENT>
+                </QUERY>
+              </QUERIES>"
+      resp = api(data)
+      resp = checkRES resp
+      @userID = resp['RESPONSES']['RESPONSE']['USER']
+      File.open('./GN_ID', 'w'){|f| f.puts @userID}
+    end
 
     return @userID
   end
